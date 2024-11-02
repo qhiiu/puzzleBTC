@@ -293,7 +293,7 @@ void init_value(int mode, uint64_t P, uint64_t xN, std::string& address,Int& pri
                 }
             }
             break;
-++
+
         case INPUT:
             std::cout << "\nRANGE__INPUT : " << rStart_priv_dec.GetBase10() << " - " << rEnd_priv_dec.GetBase10();
             char* input_priv_dec = new char[100];
