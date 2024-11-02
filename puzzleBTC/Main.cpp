@@ -309,8 +309,8 @@ void init_value(int mode, uint64_t P, uint64_t xN, std::string& address,Int& pri
                     priv_dec.IsLowerOrEqual(&rEnd_priv_dec)){ 
                         break; 
                 }
-                break;
             }
+        break;
     }
     
     Int _10B, _xNB;
