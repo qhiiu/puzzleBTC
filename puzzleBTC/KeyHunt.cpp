@@ -78,10 +78,14 @@ KeyHunt::~KeyHunt()
 {	
 	printf("\n\n");
 	// save data
+	std::string fileSaveData_name;
+	fileSaveData_name = "x" + std::to_string(this->P) + ".txt";
+
+	std::cout<<"\nFile save : " << fileSaveData_name;
+
+	std::ofstream saveData(fileSaveData_name, std::ios::app); //create x67.txt to write_append
+
     Int priv_dec_copy = this->priv_dec;
-
-    std::ofstream saveData("x67.txt", std::ios::app); //create x67.txt to write_append
-
     for (int i = 0; i < this->xN; i++) // loop to save each priv_dec 
     {
         saveData <<"\n"<< priv_dec_copy.GetBase10(); // write data into file

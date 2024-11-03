@@ -50,9 +50,11 @@ uint64_t check_data(uint64_t P, std::string priv)
               exit(0);
             }
         }
-
         file.close();
-    } else {   cout << "Err file !!!" << endl;   }
+    } else {   
+        std::cout << "\n\nErr file !!! Don't have file : " << fileName << std::endl;
+        exit(-1);
+    }
 	return n;
 }
 //-----------------------------------------------------------------------
@@ -402,12 +404,12 @@ int main(){
 
 	uint64_t P = 67;
 	uint64_t xN = 1;
-	int sleepTime = 5;
+	int sleepTime = 0;
 
     // ----- input P-xN-sleepTime -------
-    // std::cout <<"nhập P = "; std::cin >> P ; std::cout << std::endl;
-    // std::cout <<"nhập xN = "; std::cin >> xN ; std::cout << std::endl;
-    // std::cout << "sleepTime xT : "; std::cin >> sleepTime; std::cout<< endl;
+    std::cout <<"nhập P = "; std::cin >> P ; std::cout << std::endl;
+    std::cout <<"nhập xN = "; std::cin >> xN ; std::cout << std::endl;
+    std::cout << "sleepTime xT : "; std::cin >> sleepTime; std::cout<< endl;
 
 	for (int i = 0; i < 9999; i++)	{
 		std::cout << "\n-- sleep : "<< sleepTime << " s" << std::endl; 
