@@ -411,8 +411,9 @@ int main(){
     std::cout <<"nhập xN = "; std::cin >> xN ; std::cout << std::endl;
     std::cout << "sleepTime xT : "; std::cin >> sleepTime; std::cout<< endl;
 
-	for (int i = 0; i < 9999; i++)	{
-		std::cout << "\n-- sleep : "<< sleepTime << " s" << std::endl; 
+	for (int i = 1; i < 9999; i++)	
+    {
+		std::cout << "\n-- sleep : "<< sleepTime << " s ------ i = "<< i << std::endl; 
 		run(mode, P, xN);
 		
         // coutdown sleeptime
