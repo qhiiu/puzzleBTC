@@ -399,8 +399,8 @@ void run(int mode, uint64_t P, uint64_t xN){
 
 int main(){
     
-    int mode = RANDOM;
-    // int mode = INPUT;
+    // int mode = RANDOM;
+    int mode = INPUT;
 
 	uint64_t P = 67;
 	uint64_t xN = 1;
@@ -409,7 +409,7 @@ int main(){
     // ----- input P-xN-sleepTime -------
     std::cout <<"nhập P = "; std::cin >> P ; std::cout << std::endl;
     std::cout <<"nhập xN = "; std::cin >> xN ; std::cout << std::endl;
-    std::cout << "sleepTime xT : "; std::cin >> sleepTime; std::cout<< endl;
+    std::cout << "sleepTime xT : "; std::cin >> sleepTime; std::cout<< endl; 
 
 	for (int i = 1; i < 9999; i++)	
     {
@@ -417,7 +417,7 @@ int main(){
 		run(mode, P, xN);
 		
         // coutdown sleeptime
-        for (int j = sleepTime; j >= 0; j--)        {
+        for (int j = sleepTime; j >= 0; j--){
             sleep(1);   
             printf("----->  %d s  <-----",j);
             fflush(stdout);
