@@ -80,11 +80,11 @@ inline void __cudaSafeCall(cudaError err, const char* file, const int line)
 
 __global__ void compute_keys_comp_mode_sa(uint32_t* hash160, uint64_t* __inputKey, uint32_t* out_found)
 {
-			// blockDim.x = 128 // blockIdx.x = 0-> 48 
-			// xPtr-yPtr = 0-512     // xPtr-yPtr = 1024-1536
+			// blockDim.x = 128 // blockIdx.x từ 0-> 48 
+			// xPtr-yPtr : 0    - 512     // xPtr-yPtr : 1024 - 1536
 
 	int xPtr = (blockIdx.x * blockDim.x) * 8;  
-	int yPtr = xPtr + 4;
+	int yPtr = xPtr + 4 * blockDim.x;
 
 	uint64_t* startx = __inputKey + xPtr;  
 	uint64_t* starty = __inputKey + yPtr;
@@ -444,36 +444,20 @@ int GPUEngine::GetNbThread()
 
 bool GPUEngine::SetKeys(Point* p) //p ở đây có dạng (x=, y= , z=1)
 {
-	// // Sets the starting keys for each thread 	// p must contains nbThread public keys
-	// for (int i = 0; i < nbThread; i += nbThreadPerGroup) { //nbThread = 6144 -- nbThreadPerGroup = 128 
-
-	// 	for (int j = 0; j < nbThreadPerGroup; j++) {
-
-	// 		inputKeyPinned[8 * i + j + 0 * nbThreadPerGroup] = p[i + j].x.bits64[0];
-	// 		inputKeyPinned[8 * i + j + 1 * nbThreadPerGroup] = p[i + j].x.bits64[1];
-	// 		inputKeyPinned[8 * i + j + 2 * nbThreadPerGroup] = p[i + j].x.bits64[2];
-	// 		inputKeyPinned[8 * i + j + 3 * nbThreadPerGroup] = p[i + j].x.bits64[3];
-
-	// 		inputKeyPinned[8 * i + j + 4 * nbThreadPerGroup] = p[i + j].y.bits64[0];
-	// 		inputKeyPinned[8 * i + j + 5 * nbThreadPerGroup] = p[i + j].y.bits64[1];
-	// 		inputKeyPinned[8 * i + j + 6 * nbThreadPerGroup] = p[i + j].y.bits64[2];
-	// 		inputKeyPinned[8 * i + j + 7 * nbThreadPerGroup] = p[i + j].y.bits64[3];
-  	// 	}
-	// }
-
-	for (int i = 0; i < (nbThread/nbThreadPerGroup); i++) { //nbThread = 6144 -- nbThreadPerGroup = 128 
+	// Sets the starting keys for each thread 	// p must contains nbThread public keys
+	for (int i = 0; i < nbThread; i += nbThreadPerGroup) { //nbThread = 6144 -- nbThreadPerGroup = 128 
 
 		for (int j = 0; j < nbThreadPerGroup; j++) {
 
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 0] = p[i*nbThreadPerGroup + j].x.bits64[0];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 1] = p[i*nbThreadPerGroup + j].x.bits64[1];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 2] = p[i*nbThreadPerGroup + j].x.bits64[2];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 3] = p[i*nbThreadPerGroup + j].x.bits64[3];
+			inputKeyPinned[8 * i + j + 0 * nbThreadPerGroup] = p[i + j].x.bits64[0];
+			inputKeyPinned[8 * i + j + 1 * nbThreadPerGroup] = p[i + j].x.bits64[1];
+			inputKeyPinned[8 * i + j + 2 * nbThreadPerGroup] = p[i + j].x.bits64[2];
+			inputKeyPinned[8 * i + j + 3 * nbThreadPerGroup] = p[i + j].x.bits64[3];
 
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 4] = p[i*nbThreadPerGroup + j].y.bits64[0];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 5] = p[i*nbThreadPerGroup + j].y.bits64[1];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 6] = p[i*nbThreadPerGroup + j].y.bits64[2];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 7] = p[i*nbThreadPerGroup + j].y.bits64[3];
+			inputKeyPinned[8 * i + j + 4 * nbThreadPerGroup] = p[i + j].y.bits64[0];
+			inputKeyPinned[8 * i + j + 5 * nbThreadPerGroup] = p[i + j].y.bits64[1];
+			inputKeyPinned[8 * i + j + 6 * nbThreadPerGroup] = p[i + j].y.bits64[2];
+			inputKeyPinned[8 * i + j + 7 * nbThreadPerGroup] = p[i + j].y.bits64[3];
   		}
 	}
 

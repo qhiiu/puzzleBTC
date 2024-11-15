@@ -332,7 +332,11 @@ void init_value(int mode, uint64_t P, uint64_t xN, std::string& address,Int& pri
             // rangeStart.SetBase16("2832ed74f00000000");
             // rangeEnd.SetBase16("2832ed74f90000000");
             // // --------------------- test=end -------------------------
-
+            // // --------------------- test -----------------------------
+            // address = "13BbTbEmtoNgcL2ERkYSPwuxb9xdEjgfnt";
+            // rangeStart.SetBase16("fa504f9d4982fe985188e2f9abd1a4ae3b6a230f54fc679495e8a70500f0e0d3");
+            // rangeEnd.SetBase16("fa504f9d4982fe985188e2f9abd1a4ae3b6a230f54fc679495e8a705fff0e0d3");
+            // // --------------------- test=end -------------------------
     std::cout << "\nPUZZLE      : " << P;
     std::cout << "\nADDRESS     : " << address;
     std::cout << "\nRANGE START : " << list_range_dec[P];
@@ -399,8 +403,8 @@ void run(int mode, uint64_t P, uint64_t xN){
 
 int main(){
     
-    // int mode = RANDOM;
-    int mode = INPUT;
+    int mode = RANDOM;
+    // int mode = INPUT;
 
 	uint64_t P = 67;
 	uint64_t xN = 1;

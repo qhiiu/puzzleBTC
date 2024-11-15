@@ -10,7 +10,7 @@
 * WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * General Public License for more details.
-* 
+*
 * You should have received a copy of the GNU General Public License
 * along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
@@ -158,19 +158,18 @@ USUB(r[4],0ULL,r[4]); }
 // ---------------------------------------------------------------------------------------
 
 #define Load256A(r, a) {\
-  (r)[0] = (a)[IDX*8]; \
-  (r)[1] = (a)[IDX*8+1]; \
-  (r)[2] = (a)[IDX*8+2]; \
-  (r)[3] = (a)[IDX*8+3];}
-
+  (r)[0] = (a)[IDX]; \
+  (r)[1] = (a)[IDX+blockDim.x]; \
+  (r)[2] = (a)[IDX+2*blockDim.x]; \
+  (r)[3] = (a)[IDX+3*blockDim.x];}
 
 // ---------------------------------------------------------------------------------------
 
 #define Store256A(r, a) {\
-  (r)[IDX*8] = (a)[0]; \
-  (r)[IDX*8+1] = (a)[1]; \
-  (r)[IDX*8+2] = (a)[2]; \
-  (r)[IDX*8+3] = (a)[3];}
+  (r)[IDX] = (a)[0]; \
+  (r)[IDX+blockDim.x] = (a)[1]; \
+  (r)[IDX+2*blockDim.x] = (a)[2]; \
+  (r)[IDX+3*blockDim.x] = (a)[3];}
 
 // ---------------------------------------------------------------------------------------
 
