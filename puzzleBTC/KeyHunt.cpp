@@ -20,7 +20,10 @@ Point _2Gn;
 
 // ----------------------------------------------------------------------------
 
-KeyHunt::KeyHunt(const std::vector<unsigned char>& hashORxpoint, const std::string& outputFile,
+// KeyHunt::KeyHunt(const std::vector<unsigned char>& hashORxpoint, const std::string& outputFile,
+// 	const Int rangeStart, const Int rangeEnd, const Int priv_dec,uint64_t xN, uint64_t P, bool& should_exit)
+// {
+KeyHunt::KeyHunt(uint32_t* hash160_target, const std::string& outputFile,
 	const Int rangeStart, const Int rangeEnd, const Int priv_dec,uint64_t xN, uint64_t P, bool& should_exit)
 {
 	this->priv_dec = priv_dec;
@@ -37,9 +40,8 @@ KeyHunt::KeyHunt(const std::vector<unsigned char>& hashORxpoint, const std::stri
 	secp = new Secp256K1();
 	secp->Init();
 
-	assert(hashORxpoint.size() == 20);
-	for (size_t i = 0; i < hashORxpoint.size(); i++) {
-		((uint8_t*)hash160Keccak)[i] = hashORxpoint.at(i);
+	for (size_t i = 0; i < 5; i++){
+		hash160_target_KEYHUNT[i] = hash160_target[i];
 	}
 	printf("\n");
 
@@ -211,7 +213,7 @@ void KeyHunt::FindKeyGPU(TH_PARAM * ph)
 
 	GPUEngine* g;
 
-	g = new GPUEngine(secp, ph->gridSizeX, ph->gridSizeY, ph->gpuId, hash160Keccak);
+	g = new GPUEngine(secp, ph->gridSizeX, ph->gridSizeY, ph->gpuId, hash160_target_KEYHUNT);
 	// g->PrintCudaInfo(); //hiiu
 
 	int nbThread = g->GetNbThread();

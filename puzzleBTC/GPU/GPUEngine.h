@@ -5,7 +5,7 @@
 #include "../SECP256k1.h"
 
 // Number of key per thread (must be a multiple of GRP_SIZE) per kernel call
-#define STEP_SIZE (2048 * 1)
+#define STEP_SIZE (2048 * 1) 
 
 // Number of thread per block
 #define ITEM_SIZE_A 28
@@ -23,7 +23,7 @@ class GPUEngine
 public:
 
 	GPUEngine(Secp256K1* secp, int nbThreadGroup, int nbThreadPerGroup, int gpuId, 
-		const uint32_t* hashORxpoint);
+		const uint32_t* hash160_target_gpu);
 
 	~GPUEngine();
 
@@ -46,8 +46,8 @@ private:
 	int nbThread;
 	int nbThreadPerGroup;
 
-	uint32_t* inputHashORxpoint;
-	uint32_t* inputHashORxpointPinned;
+	uint32_t* input_hash160_target_GPU;
+	uint32_t* input_hash160_target_GPU_pinned;
 
 	uint64_t* inputKey;
 	uint64_t* inputKeyPinned;

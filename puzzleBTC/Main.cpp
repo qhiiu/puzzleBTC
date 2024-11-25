@@ -332,11 +332,11 @@ void init_value(int mode, uint64_t P, uint64_t xN, std::string& address,Int& pri
             // rangeStart.SetBase16("2832ed74f00000000");
             // rangeEnd.SetBase16("2832ed74f90000000");
             // // --------------------- test=end -------------------------
-            // // --------------------- test -----------------------------
-            // address = "13BbTbEmtoNgcL2ERkYSPwuxb9xdEjgfnt";
-            // rangeStart.SetBase16("fa504f9d4982fe985188e2f9abd1a4ae3b6a230f54fc679495e8a70500f0e0d3");
-            // rangeEnd.SetBase16("fa504f9d4982fe985188e2f9abd1a4ae3b6a230f54fc679495e8a705fff0e0d3");
-            // // --------------------- test=end -------------------------
+            // --------------------- test -----------------------------
+            address = "13BbTbEmtoNgcL2ERkYSPwuxb9xdEjgfnt";
+            rangeStart.SetBase16("fa504f9d4982fe985188e2f9abd1a4ae3b6a230f54fc679495e8a70500f0e0d3");
+            rangeEnd.SetBase16("fa504f9d4982fe985188e2f9abd1a4ae3b6a230f54fc679495e8a705fff0e0d3");
+            // --------------------- test=end -------------------------
     std::cout << "\nPUZZLE      : " << P;
     std::cout << "\nADDRESS     : " << address;
     std::cout << "\nRANGE START : " << list_range_dec[P];
@@ -364,8 +364,7 @@ void run(int mode, uint64_t P, uint64_t xN){
 	// bool gpuAutoGrid = true;
 	vector<int> gpuId = { 0 };
 	vector<int> gridSize;
-	vector<unsigned char> hashORxpoint;
-	hashORxpoint.clear();
+
 
     std::string address = "";
 	Int priv_dec, rangeStart, rangeEnd;
@@ -376,12 +375,25 @@ void run(int mode, uint64_t P, uint64_t xN){
 	std::string outputFile = "$.txt";
     std::cout << "\n\nOUTPUT FILE  : " << outputFile;
 
+    //-------------------------------------------------------------------
+    //decode addr => hash160_target[5]
+	vector<unsigned char> hash160_targetCache;
+	hash160_targetCache.clear();
+    
+    uint32_t hash160_target[5];
 
-	if (DecodeBase58(address, hashORxpoint)) {
-        hashORxpoint.erase(hashORxpoint.begin() + 0);
-        hashORxpoint.erase(hashORxpoint.begin() + 20, hashORxpoint.begin() + 24);
-        assert(hashORxpoint.size() == 20);
-	}
+	if (DecodeBase58(address, hash160_targetCache)) {
+        hash160_targetCache.erase(hash160_targetCache.begin() + 0);
+        hash160_targetCache.erase(hash160_targetCache.begin() + 20, hash160_targetCache.begin() + 24);
+        assert(hash160_targetCache.size() == 20);
+    
+        //codenow
+       	for (size_t i = 0; i < hash160_targetCache.size(); i++) {
+	    	((uint8_t*)hash160_target)[i] = hash160_targetCache.at(i); // --- hash160 đây hash160Kecca_k[i]
+	    }
+	} 
+    //-------------------------------------------------------------------
+
 
 	if (gridSize.size() == 0) {
 		for (int i = 0; i < gpuId.size(); i++) {
@@ -394,7 +406,7 @@ void run(int mode, uint64_t P, uint64_t xN){
 
 	KeyHunt* v;
     bool should_exit = false;
-	v = new KeyHunt(hashORxpoint, outputFile, rangeStart, rangeEnd, priv_dec, xN, P, should_exit);
+	v = new KeyHunt(hash160_target, outputFile, rangeStart, rangeEnd, priv_dec, xN, P, should_exit);
 	v->Search(gpuId, gridSize, should_exit);
 
 	delete v;

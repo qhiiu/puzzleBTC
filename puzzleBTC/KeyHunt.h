@@ -20,7 +20,7 @@ typedef struct {
 	bool hasStarted;
 
 	int  gridSizeX;
-	int  gridSizeY;
+	int  gridSizeY; 
 	int  gpuId;
 
 	Int rangeStart;
@@ -32,7 +32,10 @@ class KeyHunt
 {
 
 public:
-	KeyHunt(const std::vector<unsigned char>& hashORxpoint, const std::string& outputFile, 
+	// KeyHunt(const std::vector<unsigned char>& hashORxpoint, const std::string& outputFile, 
+	// 	const Int rangeStart, const Int rangeEnd, const Int priv_dec, uint64_t xN, uint64_t P , bool& should_exit);
+
+	KeyHunt(uint32_t* hash160_target, const std::string& outputFile, 
 		const Int rangeStart, const Int rangeEnd, const Int priv_dec, uint64_t xN, uint64_t P , bool& should_exit);
 
 	~KeyHunt();
@@ -69,7 +72,7 @@ private:
 	int nbFoundKey;
 
 	std::string outputFile;
-	uint32_t hash160Keccak[5];
+	uint32_t hash160_target_KEYHUNT[5];
 
 	Int priv_dec;
 	uint64_t xN;
