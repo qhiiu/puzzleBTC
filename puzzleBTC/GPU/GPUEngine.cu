@@ -444,36 +444,24 @@ int GPUEngine::GetNbThread()
 
 bool GPUEngine::SetKeys(Point* p) //p ở đây có dạng (x=, y= , z=1)
 {
-	// // Sets the starting keys for each thread 	// p must contains nbThread public keys
-	// for (int i = 0; i < nbThread; i += nbThreadPerGroup) { //nbThread = 6144 -- nbThreadPerGroup = 128 
+	// // Sets the starting keys for each thread 	// p contains nbThread public keys
 
-	// 	for (int j = 0; j < nbThreadPerGroup; j++) {
-
-	// 		inputKeyPinned[8 * i + j + 0 * nbThreadPerGroup] = p[i + j].x.bits64[0];
-	// 		inputKeyPinned[8 * i + j + 1 * nbThreadPerGroup] = p[i + j].x.bits64[1];
-	// 		inputKeyPinned[8 * i + j + 2 * nbThreadPerGroup] = p[i + j].x.bits64[2];
-	// 		inputKeyPinned[8 * i + j + 3 * nbThreadPerGroup] = p[i + j].x.bits64[3];
-
-	// 		inputKeyPinned[8 * i + j + 4 * nbThreadPerGroup] = p[i + j].y.bits64[0];
-	// 		inputKeyPinned[8 * i + j + 5 * nbThreadPerGroup] = p[i + j].y.bits64[1];
-	// 		inputKeyPinned[8 * i + j + 6 * nbThreadPerGroup] = p[i + j].y.bits64[2];
-	// 		inputKeyPinned[8 * i + j + 7 * nbThreadPerGroup] = p[i + j].y.bits64[3];
-  	// 	}
-	// }
-
+	uint64_t thread_id;
 	for (int i = 0; i < (nbThread/nbThreadPerGroup); i++) { //nbThread = 6144 -- nbThreadPerGroup = 128 
 
 		for (int j = 0; j < nbThreadPerGroup; j++) {
+			
+			thread_id = i*nbThreadPerGroup + j;
+			
+			inputKeyPinned[thread_id * 8 + 0] = p[thread_id].x.bits64[0];
+			inputKeyPinned[thread_id * 8 + 1] = p[thread_id].x.bits64[1];
+			inputKeyPinned[thread_id * 8 + 2] = p[thread_id].x.bits64[2];
+			inputKeyPinned[thread_id * 8 + 3] = p[thread_id].x.bits64[3];
 
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 0] = p[i*nbThreadPerGroup + j].x.bits64[0];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 1] = p[i*nbThreadPerGroup + j].x.bits64[1];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 2] = p[i*nbThreadPerGroup + j].x.bits64[2];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 3] = p[i*nbThreadPerGroup + j].x.bits64[3];
-
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 4] = p[i*nbThreadPerGroup + j].y.bits64[0];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 5] = p[i*nbThreadPerGroup + j].y.bits64[1];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 6] = p[i*nbThreadPerGroup + j].y.bits64[2];
-			inputKeyPinned[(i*nbThreadPerGroup + j) * 8 + 7] = p[i*nbThreadPerGroup + j].y.bits64[3];
+			inputKeyPinned[thread_id * 8 + 4] = p[thread_id].y.bits64[0];
+			inputKeyPinned[thread_id * 8 + 5] = p[thread_id].y.bits64[1];
+			inputKeyPinned[thread_id * 8 + 6] = p[thread_id].y.bits64[2];
+			inputKeyPinned[thread_id * 8 + 7] = p[thread_id].y.bits64[3];
   		}
 	}
 
